@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.znlccy.blog.core.mapper.AttachmentMapper">
+
+    <!-- 表名 开始 -->
+    <sql id="BASE_TABLE">
+        tb_attachment
+    </sql>
+    <!-- 表名 结束 -->
+
+    <!-- 基本列 开始 -->
+    <sql id="BASE_COLUMN">
+      amid, file_name, file_type, file_path, author_id, create_time, update_time
+    </sql>
+    <!-- 基本列 结束 -->
+
+    <!-- 添加附件 开始 -->
+    <insert id="saveAttachment" parameterType="com.znlccy.blog.core.model.Attachment">
+        INSERT INTO
+          <include refid="BASE_TABLE" />
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            file_name, file_type, file_path, author_id, create_time
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{fileName, jdbcType=VARCHAR},
+            #{fileType, jdbcType=VARCHAR},
+            #{filePath, jdbcType=VARCHAR},
+            #{authorId, jdbcType=VARCHAR},
+            #{createTime, jdbcType=TIMESTAMP}
+        </trim>
+    </insert>
+    <!-- 添加附件 结束 -->
+
+    <!-- 多条件查找附件 开始 -->
+    <select id="findAttachmentByCondition" parameterType="com.znlccy.blog.core.condition.AttachmentCondition" resultType="com.znlccy.blog.core.model.Attachment">
+        SELECT
+          <include refid="BASE_COLUMN" />
+        FROM
+          <include refid="BASE_TABLE" /> as att
+        WHERE
+          <if test="fileName != null">
+              AND att.file_name LIKE CONCAT('%', #{fileName, jdbcType=VARCHAR}, '%')
+          </if>
+          <if test="fileType != null">
+              AND att.file_type LIKE CONCAT('%', #{fileType, jdbcType=VARCHAR}, '%')
+          </if>
+          <if test="filePath != null">
+              AND att.file_path LIKE CONCAT('%', #{filePath, jdbcType=VARCHAR}, '%')
+          </if>
+          <if test="startTime != null">
+              AND att.create_time &gt;= #{startTime, jdbcType=TIMESTAMP}
+          </if>
+          <if test="endTime != null">
+              AND att.create_time &lt;= #{endTime, jdbcType=TIMESTAMP}
+          </if>
+    </select>
+    <!-- 多条件查找附件 开始 -->
+
+    <!-- 更新附件 开始 -->
+    <update id="updateAttachment" parameterType="com.znlccy.blog.core.model.Attachment">
+        UPDATE
+          <include refid="BASE_TABLE" />
+        SET
+          <if test="fileName != null">
+              file_name = #{fileName, jdbcType=VARCHAR},
+          </if>
+          <if test="fileType != null">
+              file_type = #{fileType, jdbcType=VARCHAR},
+          </if>
+          <if test="filePath != null">
+              file_path = #{filePath, jdbcType=VARCHAR},
+          </if>
+          <if test="updateTime != null">
+              update_time = #{updateTime, jdbcType=TIMESTAMP}
+          </if>
+        WHERE
+          amid = #{amid, jdbcType=BIGINT}
+    </update>
+    <!-- 更新附件 结束 -->
+
+    <!-- 删除附件 开始 -->
+    <delete id="deleteAttachmentById" parameterType="java.lang.Long">
+        DELETE FROM
+          <include refid="BASE_TABLE" />
+        WHERE
+          amid = #{amid, jdbcType=BIGINT}
+    </delete>
+    <!-- 删除附件 结束 -->
+
+    <!-- 查找附件 开始 -->
+    <select id="findAttachmentById" parameterType="java.lang.Long" resultType="com.znlccy.blog.core.model.Attachment">
+        SELECT
+          <include refid="BASE_COLUMN" />
+        FROM
+          <include refid="BASE_TABLE" />
+        WHERE
+          amid = #{amid, jdbcType=BIGINT}
+    </select>
+    <!-- 查找附件 结束 -->
+
+    <!-- 附件总数 开始 -->
+    <select id="getAttachmentCount" resultType="java.lang.Long">
+        SELECT
+          COUNT(*)
+        FROM
+          <include refid="BASE_TABLE" />
+    </select>
+    <!-- 附件总数 结束 -->
+</mapper>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.znlccy.blog.core.mapper.LogMapper">
+
+    <!-- 表名 开始 -->
+    <sql id="BASE_TABLE">
+        tb_log
+    </sql>
+    <!-- 表名 结束 -->
+
+    <!-- 基本列 开始 -->
+    <sql id="BASE_COLUMN">
+        lid, action, data, author_id, ip, crete_time
+    </sql>
+    <!-- 基本列 结束 -->
+
+    <!-- 添加日志 开始 -->
+    <insert id="saveLog" parameterType="com.znlccy.blog.core.model.Log">
+        INSERT INTO
+          <include refid="BASE_TABLE" />
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            action, data, author_id, ip, create_time
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{action, jdbcType=VARCHAR},
+            #{data, jdbcType=VARCHAR},
+            #{authorId, jdbcType=BIGINT},
+            #{ip, jdbcType=VARCHAR},
+            #{createTime, jdbcType=TIMESTAMP}
+        </trim>
+    </insert>
+    <!-- 添加日志 结束 -->
+
+    <!-- 查看日志 开始 -->
+    <select id="findLogById" parameterType="java.lang.Long" resultType="com.znlccy.blog.core.model.Log">
+        SELECT
+          <include refid="BASE_COLUMN" />
+        FROM
+          <include refid="BASE_TABLE" />
+        WHERE
+          lid = #{lid, jdbcType=BIGINT}
+    </select>
+    <!-- 查看日志 结束 -->
+
+    <!-- 条件查找日志 开始 -->
+    <select id="findLogByCondition" parameterType="com.znlccy.blog.core.condition.LogCondition" resultType="com.znlccy.blog.core.model.Log">
+        SELECT
+          <include refid="BASE_COLUMN" />
+        FROM
+          <include refid="BASE_TABLE" /> AS lg
+        WHERE
+          <if test="action != null">
+              AND lg.action LIKE CONCAT('%', #{action, jdbcType=VARCHAR}, '%')
+          </if>
+          <if test="data != null">
+              AND lg.data LIKE CONCAT('%', #{data, jdbcType=VARCHAR}, '%')
+          </if>
+          <if test="authorId != null">
+              AND lg.author_id = #{authorId, jdbcType=BIGINT}
+          </if>
+          <if test="ip != null">
+              AND lg.ip LIKE CONCAT('%', #{ip, jdbcType=VARCHAR}, '%')
+          </if>
+          <if test="startTime != null">
+              AND lg.create_time &gt;= #{startTime, jdbcType=TIMESTAMP}
+          </if>
+          <if test="endTime != null">
+              AND lg.create_time &lt;= #{endTime, jdbcType=TIMESTAMP}
+          </if>
+    </select>
+    <!-- 条件查找日志 结束 -->
+
+    <!-- 删除日志 开始 -->
+    <delete id="deleteLogById" parameterType="java.lang.Long">
+        DELETE FROM
+          <include refid="BASE_TABLE" />
+        WHERE
+          lid = #{lid, jdbcType=BIGINT}
+    </delete>
+    <!-- 删除日志 结束 -->
+
+    <!-- 日志总数 开始 -->
+    <select id="getLogCount" resultType="java.lang.Long">
+        SELECT
+          COUNT(*)
+        FROM
+          <include refid="BASE_TABLE" />
+    </select>
+    <!-- 日志总数 结束 -->
+</mapper>

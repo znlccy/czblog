@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.znlccy.blog.core.mapper.ArticleMapper">
+
+    <!-- 表名 开始 -->
+    <sql id="BASE_TABLE">
+        tb_article
+    </sql>
+    <!-- 表名 结束 -->
+
+    <!-- 基本列 开始 -->
+    <sql id="BASE_COLUMN">
+        atid, title, title_pic, slug, content, author_id, type, status, tag, category, hit, comment_num,
+        allow_comment, allow_ping, allow_feed, create_time, update_time
+    </sql>
+    <!-- 基本列 结束 -->
+
+    <!-- 用户表 开始 -->
+    <sql id="TABLE_USER">
+        <include refid="com.znlccy.blog.core.mapper.UserMapper.BASE_TABLE" />
+    </sql>
+    <!-- 用户表 结束 -->
+
+    <!-- 添加文章 开始 -->
+    <insert id="saveArticle" parameterType="com.znlccy.blog.core.model.Article" useGeneratedKeys="true" keyProperty="atid">
+        INSERT INTO
+          <include refid="BASE_TABLE" />
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+        title, title_pic, slug, content, author_id, type, status, tag, category, hit, comment_num,
+        allow_comment, allow_ping, allow_feed, create_time
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+        #{title, jdbcType=VARCHAR},
+        #{titlePic, jdbcType=VARCHAR},
+        #{slug, jdbcType=VARCHAR},
+        #{content, jdbcType=LONGVARCHAR},
+        #{authorId, jdbcType=BIGINT},
+        #{type, jdbcType=VARCHAR},
+        #{status, jdbcType=VARCHAR},
+        #{tag, jdbcType=VARCHAR},
+        #{category, jdbcType=VARCHAR},
+        #{hit, jdbcType=INTEGER},
+        #{commentNum, jdbcType=INTEGER},
+        #{allowComment, jdbcType=INTEGER},
+        #{allowPing, jdbcType=INTEGER},
+        #{allowFeed, jdbcType=INTEGER},
+        #{createTime, jdbcType=TIMESTAMP}
+        </trim>
+    </insert>
+    <!-- 添加文章 结束 -->
+
+    <!-- 查询文章 开始 -->
+    <select id="findArticleById" parameterType="java.lang.Long" resultType="com.znlccy.blog.core.model.Article">
+        SELECT
+          <include refid="BASE_COLUMN" />
+        FROM
+          <include refid="BASE_TABLE" />
+        WHERE
+          atid = #{atid, jdbcType=BIGINT}
+    </select>
+    <!-- 查询文章 结束 -->
+
+    <!-- 多条件查找文章 开始 -->
+    <select id="findArticleByCondition" resultType="com.znlccy.blog.core.model.Article" parameterType="com.znlccy.blog.core.condition.ArticleCondition">
+        SELECT
+          <include refid="BASE_COLUMN" />
+        FROM
+          <include refid="BASE_TABLE" /> as afc
+        WHERE
+          <if test="tag != null">
+              AND afc.tag LIKE CONCAT('%', #{tag, jdbcType=VARCHAR} , '%')
+          </if>
+          <if test="category != null">
+              AND afc.category LIKE CONCAT('%', #{category, jdbcType=VARCHAR}, '%')
+          </if>
+          <if test="status != null">
+              AND afc.status LIKE CONCAT('%', #{status, jdbcType=VARCHAR}, '%')
+          </if>
+          <if test="title != null">
+              AND afc.title LIKE CONCAT('%', #{title, jdbcType=VARCHAR}, '%')
+          </if>
+          <if test="content != null">
+              AND afc.content LIKE CONCAT('%', #{content, jdbcType=VARCHAR}, '%')
+          </if>
+          <if test="type != null">
+              AND afc.type LIKE CONCAT('%', #{type, jdbcType=VARCHAR}, '%')
+          </if>
+          <if test="startTime !=null">
+              AND afc.create_time &gt;= #{startTime, jdbcType=TIMESTAMP}
+          </if>
+          <if test="endTime != null">
+              AND afc.create_time &lt;= #{endTime, jdbcType=TIMESTAMP}
+          </if>
+        ORDER BY afc.create_time DESC
+    </select>
+    <!-- 多条件查找文章 结束 -->
+
+    <!-- 更新文章 开始 -->
+    <update id="updateArticle" parameterType="com.znlccy.blog.core.model.Article">
+        UPDATE
+          <include refid="BASE_TABLE" />
+        SET
+        <if test="title != null">
+          title = #{title, jdbcType=VARCHAR},
+        </if>
+        <if test="titlePic != null">
+          title_pic = #{titlePic, jdbcType=VARCHAR},
+        </if>
+        <if test="slug != null">
+          slug = #{slug, jdbcType=VARCHAR},
+        </if>
+        <if test="content != null">
+          content = #{content, jdbcType=LONGVARCHAR},
+        </if>
+        <if test="authorId != null">
+          author_id = #{authorId, jdbcType=BIGINT},
+        </if>
+        <if test="type != null">
+          type = #{type, jdbcType=VARCHAR},
+        </if>
+        <if test="status != null">
+          status = #{status, jdbcType=VARCHAR},
+        </if>
+        <if test="tag != null">
+            tag = #{tag, jdbncType=VARCHAR},
+        </if>
+        <if test="category != null">
+            category = #{category, jdbcType=VARCHAR},
+        </if>
+        <if test="hit != null">
+            hit = #{hit, jdbcType=INTEGER},
+        </if>
+        <if test="commentNum != null">
+            comment_num = #{commentNum, jdbcType=INTEGER},
+        </if>
+        <if test="allowComment != null">
+            allow_comment = #{allowComment, jdbcType=INTEGER},
+        </if>
+        <if test="allowPing != null">
+            allow_ping = #{allowPing, jdbcType=INTEGER},
+        </if>
+        <if test="allowFeed != null">
+            allow_feed = #{allowFeed, jdbcTYpe=INTEGER},
+        </if>
+        <if test="updateTime != null">
+            update_time = #{updateTime, jdbcType=TIMESTAMP}
+        </if>
+        WHERE
+          atid = #{atid, jdbcType=BIGINT}
+    </update>
+    <!-- 更新文章 结束 -->
+
+    <!-- 删除文章 开始 -->
+    <delete id="deleteArticleById" parameterType="java.lang.Long">
+        DELETE FROM
+          <include refid="BASE_TABLE"/>
+        WHERE
+          atid = #{atid, jdbcType=BIGINT}
+    </delete>
+    <!-- 删除文章 结束 -->
+
+    <!-- 文章总数 开始 -->
+    <select id="getArticleCount" resultType="java.lang.Long">
+        SELECT
+          COUNT(*)
+        FROM
+          <include refid="BASE_TABLE" />
+    </select>
+    <!-- 文章总数 结束 -->
+
+    <!-- 文章分类 开始 -->
+    <select id="findArticleByCategory" parameterType="java.lang.String" resultType="com.znlccy.blog.core.model.Article">
+        SELECT
+          <include refid="BASE_COLUMN" />
+        FROM
+          <include refid="BASE_TABLE" />
+        WHERE
+          category = #{category, jdbcType=VARCHAR}
+    </select>
+    <!-- 文章分类 结束 -->
+
+    <!-- 文章标签 开始 -->
+    <select id="findArticleByTag" resultType="com.znlccy.blog.core.model.Article">
+        SELECT
+          <include refid="BASE_COLUMN" />
+        FROM
+          <include refid="BASE_TABLE" /> AS art
+        WHERE
+          art.tag IN
+        <foreach collection="list" item="param" index="index" open="(" close=")" separator=",">
+            #{param.atid, jdbcType=BIGINT}
+        </foreach>
+    </select>
+    <!-- 文章标签 结束 -->
+</mapper>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.znlccy.blog.core.mapper.CommentMapper">
+
+    <!-- 表名 开始 -->
+    <sql id="BASE_TABLE">
+        tb_comment
+    </sql>
+    <!-- 表名 结束 -->
+
+    <!-- 基本列 开始 -->
+    <sql id="BASE_COLUMN">
+      cmid, atid, author, author_id, owner_id, email, url, ip, agent, type, status, parent, content, create_time, update_time
+    </sql>
+    <!-- 基本列 结束 -->
+
+    <!-- 添加评论 开始 -->
+    <insert id="saveComment" parameterType="com.znlccy.blog.core.model.Comment">
+        INSERT INTO
+          <include refid="BASE_TABLE" />
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            atid, author, author_id, owner_id, email, url, ip, agent, type, status, parent, content, create_time
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{atid, jdbcType=BIGINT},
+            #{author, jdbcType=VARCHAR},
+            #{authorId, jdbcType=BIGINT},
+            #{ownerId, jdbcType=BIGINT},
+            #{email, jdbcType=VARCHAR},
+            #{url, jdbcType=VARCHAR},
+            #{ip, jdbcType=VARCHAR},
+            #{agent, jdbcType=VARCHAR},
+            #{type, jdbcType=VARCHAR},
+            #{status, jdbcType=INTEGER},
+            #{parent, jdbcType=INTEGER},
+            #{content, jdbcType=LONGVARCHAR},
+            #{createTime, jdbcType=TIMESTAMP}
+        </trim>
+    </insert>
+    <!-- 添加评论 结束 -->
+
+    <!-- 查询评论 开始 -->
+    <select id="findCommentById" parameterType="java.lang.Long" resultType="com.znlccy.blog.core.model.Comment">
+        SELECT
+          <include refid="BASE_COLUMN" />
+        FROM
+          <include refid="BASE_TABLE" />
+        WHERE
+          cmid = #{cmid, jdbcType=BIGINT}
+    </select>
+    <!-- 查询评论 结束 -->
+
+    <!-- 更新评论 开始 -->
+    <update id="updateComment" parameterType="com.znlccy.blog.core.model.Comment">
+        UPDATE
+          <include refid="BASE_TABLE" /> AS cmt
+        SET
+          <if test="atid != null">
+              cmt.atid = #{atid, jdbcType=BIGINT},
+          </if>
+          <if test="author != null">
+              cmt.author = #{author, jdbcType=VARCHAR},
+          </if>
+          <if test="authorId != null">
+              cmt.author_id = #{authorId, jdbcType=BIGINT},
+          </if>
+          <if test="ownerId != null">
+              cmt.owner_id = #{ownerId, jdbcType=BIGINT},
+          </if>
+          <if test="email != null">
+              cmt.email = #{email, jdbcTyp=VARCHAR},
+          </if>
+          <if test="url != null">
+              cmt.url = #{url, jdbcType=VARCHAR},
+          </if>
+          <if test="ip != null">
+              cmt.ip = #{ip, jdbcType=VARCHAR},
+          </if>
+          <if test="agent != null">
+              cmt.agent = #{agent, jdbcType=VARCHAR},
+          </if>
+          <if test="type != null">
+              cmt.type = #{type, jdbcType=VARCHAR},
+          </if>
+          <if test="status != null">
+              cmt.status = #{status, jdbcType=INTEGER},
+          </if>
+          <if test="parent != null">
+              cmt.parent = #{parent, jdbcType=INTEGER},
+          </if>
+          <if test="content != null">
+              cmt.content = #{content, jdbcType=LONGVARCHAR},
+          </if>
+          <if test="updateTime != null">
+              cmt.update_time = #{updateTime, jdbcType=TIMESTAMP}
+          </if>
+        WHERE
+          cmid = #{cmid, jdbcType=BIGINT}
+    </update>
+    <!-- 更新评论 结束 -->
+
+    <!-- 条件查询评论 开始 -->
+    <select id="findCommentByCondition" parameterType="com.znlccy.blog.core.condition.CommentCondition" resultType="com.znlccy.blog.core.model.Comment">
+        SELECT
+          <include refid="BASE_COLIUMN" />
+        FROM
+          <include refid="BASE_TABLE" /> AS cmmt
+        WHERE
+          <if test="status != null">
+              AND cmmt.status = #{status, jdbcType=INTEGER}
+          </if>
+          <if test="startTime != null">
+              AND cmmt.create_time &gt;= #{startTime, jdbcType=TIMESTAMP}
+          </if>
+          <if test="endTime != null">
+              AND cmmt.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+          </if>
+          <if test="parent != null">
+              AND cmmt.parent = #{parent, jdbcType=INTEGER}
+          </if>
+    </select>
+    <!-- 条件查询评论 结束 -->
+
+    <!-- 删除评论 开始 -->
+    <delete id="deleteCommentById" parameterType="java.lang.Long">
+        DELETE FROM
+          <include refid="BASE_TABLE" />
+        WHERE
+          cmid = #{cmid, jdbcType=BIGINT}
+    </delete>
+    <!-- 删除评论 结束 -->
+
+    <!-- 评论总数 开始 -->
+    <select id="getCommentCount" resultType="java.lang.Long">
+        SELECT
+          COUNT(*)
+        FROM
+          <include refid="BASE_TABLE" />
+    </select>
+    <!-- 评论总数 结束 -->
+</mapper>

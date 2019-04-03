@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.znlccy.blog.core.mapper.UserMapper">
+
+    <!-- 表名 开始 -->
+    <sql id="BASE_TABLE">
+        tb_user
+    </sql>
+    <!-- 表名 结束 -->
+
+    <!-- 基本列 开始 -->
+    <sql id="BASE_COLUMN">
+
+    </sql>
+    <!-- 基本列 结束 -->
+</mapper>
