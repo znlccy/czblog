@@ -80,7 +80,11 @@
 
     <!-- 删除角色 开始 -->
     <delete id="deleteRoleById" parameterType="java.lang.Long">
-
+        DELETE
+        FROM
+            <include refid="BASE_TABLE" />
+        WHERE
+            rid = #{rid, jdbcType=BIGINT}
     </delete>
     <!-- 删除角色 结束 -->
 </mapper>
