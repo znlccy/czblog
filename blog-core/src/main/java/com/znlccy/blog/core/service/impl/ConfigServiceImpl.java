@@ -1,5 +1,8 @@
 package com.znlccy.blog.core.service.impl;
 
+import com.github.pagehelper.PageInfo;
+import com.znlccy.blog.core.condition.ConfigCondition;
+import com.znlccy.blog.core.model.Config;
 import com.znlccy.blog.core.service.IConfigService;
 import org.springframework.stereotype.Service;
 
@@ -16,4 +19,33 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConfigServiceImpl implements IConfigService {
 
+    @Override
+    public void saveConfig(Config config) {
+
+    }
+
+    @Override
+    public Config findConfigById(Long cfid) {
+        return null;
+    }
+
+    @Override
+    public PageInfo<Config> findConfigByCondition(ConfigCondition configCondition, int pageSize, int pageNum) {
+        return null;
+    }
+
+    @Override
+    public void updateConfig(Config config) {
+
+    }
+
+    @Override
+    public void deleteConfigById(Long cfid) {
+
+    }
+
+    @Override
+    public Long getConfigCount() {
+        return null;
+    }
 }

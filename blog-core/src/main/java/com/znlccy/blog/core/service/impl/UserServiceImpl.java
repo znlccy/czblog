@@ -1,7 +1,15 @@
 package com.znlccy.blog.core.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.znlccy.blog.core.condition.UserCondition;
+import com.znlccy.blog.core.mapper.UserMapper;
+import com.znlccy.blog.core.model.User;
 import com.znlccy.blog.core.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * The type UserServiceImpl
@@ -15,4 +23,69 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserServiceImpl implements IUserService {
+
+    /**
+     * 注入UserMapper
+     */
+    @Autowired
+    private UserMapper userMapper;
+
+    /**
+     * 添加用户
+     * @param user
+     */
+    @Override
+    public void save(User user) {
+        userMapper.saveUser(user);
+    }
+
+    /**
+     * 查找用户
+     * @param uid
+     * @return
+     */
+    @Override
+    public User findUserById(Long uid) {
+        return userMapper.findUserById(uid);
+    }
+
+    /**
+     * 多条件查找用户
+     * @param userCondition
+     * @return
+     */
+    @Override
+    public PageInfo<User> findUserByCondition(UserCondition userCondition, int pageSize, int pageNum) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<User> users = userMapper.findUserByCondition(userCondition);
+        PageInfo<User> pageInfo = new PageInfo<>(users);
+        return pageInfo;
+    }
+
+    /**
+     * 更新用户
+     * @param user
+     */
+    @Override
+    public void updateUser(User user) {
+        userMapper.updateUser(user);
+    }
+
+    /**
+     * 删除用户
+     * @param uid
+     */
+    @Override
+    public void deleteUserById(Long uid) {
+        userMapper.deleteUserById(uid);
+    }
+
+    /**
+     * 用户总数
+     * @return
+     */
+    @Override
+    public Long getUserCount() {
+        return userMapper.getUserCount();
+    }
 }
