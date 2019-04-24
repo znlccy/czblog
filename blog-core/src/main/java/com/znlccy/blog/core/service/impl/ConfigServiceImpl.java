@@ -1,10 +1,17 @@
 package com.znlccy.blog.core.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.znlccy.blog.core.condition.ConfigCondition;
+import com.znlccy.blog.core.mapper.ConfigMapper;
 import com.znlccy.blog.core.model.Config;
 import com.znlccy.blog.core.service.IConfigService;
+import org.checkerframework.checker.units.qual.C;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * The type ConfigServiceImpl
@@ -19,33 +26,73 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConfigServiceImpl implements IConfigService {
 
+    /**
+     * 注入ConfigMapper
+     */
+    @Autowired
+    private ConfigMapper configMapper;
+
+    /**
+     * 添加配置
+     * @param config
+     */
+    @Transactional
     @Override
     public void saveConfig(Config config) {
-
+        configMapper.saveConfig(config);
     }
 
+    /**
+     * 查找配置
+     * @param cfid
+     * @return
+     */
     @Override
     public Config findConfigById(Long cfid) {
-        return null;
+        return configMapper.findConfigById(cfid);
     }
 
+    /**
+     * 多条件查找配置
+     * @param configCondition
+     * @param pageSize
+     * @param pageNum
+     * @return
+     */
     @Override
     public PageInfo<Config> findConfigByCondition(ConfigCondition configCondition, int pageSize, int pageNum) {
-        return null;
+        PageHelper.startPage(pageNum, pageSize);
+        List<Config> configs = configMapper.findConfigByCondition(configCondition);
+        PageInfo<Config> pageInfo = new PageInfo<>(configs);
+        return pageInfo;
     }
 
+    /**
+     * 更新配置
+     * @param config
+     */
+    @Transactional
     @Override
     public void updateConfig(Config config) {
-
+        configMapper.updateConfig(config);
     }
 
+    /**
+     * 删除配置
+     * @param cfid
+     */
+    @Transactional
     @Override
     public void deleteConfigById(Long cfid) {
-
+        configMapper.deleteConfigById(cfid);
     }
 
+    /**
+     * 配置总数
+     * @return
+     */
     @Override
     public Long getConfigCount() {
-        return null;
+        return configMapper.getConfigCount();
     }
 }

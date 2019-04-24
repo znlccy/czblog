@@ -1,7 +1,14 @@
 package com.znlccy.blog.core.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.znlccy.blog.core.condition.ProjectCondition;
+import com.znlccy.blog.core.mapper.ProjectMapper;
+import com.znlccy.blog.core.model.Project;
 import com.znlccy.blog.core.service.IProjectService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The type ProjectServiceImpl
@@ -15,4 +22,73 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ProjectServiceImpl implements IProjectService {
+
+    /**
+     * 依赖注入ProjectMapper
+     */
+    @Autowired
+    private ProjectMapper projectMapper;
+
+    /**
+     * 添加配置
+     * @param project
+     */
+    @Transactional
+    @Override
+    public void saveProject(Project project) {
+        projectMapper.saveProject(project);
+    }
+
+    /**
+     * 查找配置
+     * @param pjid
+     * @return
+     */
+    @Override
+    public Project findProjectById(Long pjid) {
+        return null;
+    }
+
+    /**
+     * 多条件查找配置
+     * @param projectCondition
+     * @param pageSize
+     * @param pageNum
+     * @return
+     */
+    @Override
+    public PageInfo<Project> findProjectByCondition(ProjectCondition projectCondition, int pageSize, int pageNum) {
+        PageHelper.startPage(pageNum, pageSize);
+
+        return null;
+    }
+
+    /**
+     * 更新配置
+     * @param project
+     */
+    @Transactional
+    @Override
+    public void updateProject(Project project) {
+
+    }
+
+    /**
+     * 删除配置
+     * @param pjid
+     */
+    @Transactional
+    @Override
+    public void deleteProjectById(Long pjid) {
+
+    }
+
+    /**
+     * 配置总数
+     * @return
+     */
+    @Override
+    public Long getProjectCount() {
+        return null;
+    }
 }

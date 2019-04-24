@@ -51,4 +51,10 @@ public interface ConfigMapper {
      * @param cfid
      */
     void deleteConfigById(@Param("cfid") Long cfid);
+
+    /**
+     * 配置总数
+     * @return
+     */
+    Long getConfigCount();
 }
