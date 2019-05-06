@@ -1,9 +1,38 @@
 server:
+  # 服务端口
   port: 8888
 
 spring:
+  # 连接数据库资源
   datasource:
+    # 连接驱动名称
     driver-class-name: com.mysql.cj.jdbc.Driver
+    # 连接URL
     url: jdbc:mysql://127.0.0.1:3306/db_blog?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+    # 连接用户名
     username: root
+    # 连接密码
     password: root
+
+  # 配置Redis
+  redis:
+    # 连接主机
+    host: localhost
+    # 连接数据库
+    database: 0
+    # 连接端口
+    port: 6379
+    jedis:
+      pool:
+        # 连接池最大连接数(使用负值表示没有限制)
+        max-active: 8
+        # 连接池最大阻塞时间(使用负值表示没有限制)
+        max-wait: -1
+        # 连接池最大空闲连接
+        max-idle: 8
+        # 连接池最小空闲连接
+        min-idle: 0
+    # 连接超时时间(毫秒)
+    timeout: 0
+
+

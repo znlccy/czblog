@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * The type ProjectServiceImpl
  *
@@ -46,7 +48,7 @@ public class ProjectServiceImpl implements IProjectService {
      */
     @Override
     public Project findProjectById(Long pjid) {
-        return null;
+        return projectMapper.findProjectById(pjid);
     }
 
     /**
@@ -59,8 +61,9 @@ public class ProjectServiceImpl implements IProjectService {
     @Override
     public PageInfo<Project> findProjectByCondition(ProjectCondition projectCondition, int pageSize, int pageNum) {
         PageHelper.startPage(pageNum, pageSize);
-
-        return null;
+        List<Project> projects = projectMapper.findProjectByCondition(projectCondition);
+        PageInfo<Project> pageInfo = new PageInfo<>(projects);
+        return pageInfo;
     }
 
     /**
@@ -70,7 +73,7 @@ public class ProjectServiceImpl implements IProjectService {
     @Transactional
     @Override
     public void updateProject(Project project) {
-
+        projectMapper.updateProject(project);
     }
 
     /**
@@ -80,7 +83,7 @@ public class ProjectServiceImpl implements IProjectService {
     @Transactional
     @Override
     public void deleteProjectById(Long pjid) {
-
+        projectMapper.deleteProjectById(pjid);
     }
 
     /**
@@ -89,6 +92,6 @@ public class ProjectServiceImpl implements IProjectService {
      */
     @Override
     public Long getProjectCount() {
-        return null;
+        return projectMapper.getProjectCount();
     }
 }

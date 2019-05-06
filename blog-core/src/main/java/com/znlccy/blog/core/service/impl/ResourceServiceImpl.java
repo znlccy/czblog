@@ -1,7 +1,16 @@
 package com.znlccy.blog.core.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.znlccy.blog.core.condition.ResourceCondition;
+import com.znlccy.blog.core.mapper.ResourceMapper;
+import com.znlccy.blog.core.model.Resource;
 import com.znlccy.blog.core.service.IResourceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * The type ResourceServiceImpl 
@@ -16,5 +25,73 @@ import org.springframework.stereotype.Service;
 @Service
 public class ResourceServiceImpl implements IResourceService {
 
+    /**
+     * 依赖注入ResourceMapper
+     */
+    @Autowired
+    private ResourceMapper resourceMapper;
 
+    /**
+     * 添加资源
+     * @param resource
+     */
+    @Transactional
+    @Override
+    public void saveResource(Resource resource) {
+        resourceMapper.saveResource(resource);
+    }
+
+    /**
+     * 查找资源
+     * @param rsid
+     * @return
+     */
+    @Override
+    public Resource findResourceById(Long rsid) {
+        return resourceMapper.findResourceById(rsid);
+    }
+
+    /**
+     * 多条件查找资源
+     * @param resourceCondition
+     * @param pageSize
+     * @param pageNum
+     * @return
+     */
+    @Override
+    public PageInfo<Resource> findResourceByCondition(ResourceCondition resourceCondition, int pageSize, int pageNum) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Resource> resourceList = resourceMapper.findResourceByCondition(resourceCondition);
+        PageInfo<Resource> pageInfo = new PageInfo<>(resourceList);
+        return pageInfo;
+    }
+
+    /**
+     * 更新资源
+     * @param resource
+     */
+    @Transactional
+    @Override
+    public void updateResource(Resource resource) {
+        resourceMapper.updateResource(resource);
+    }
+
+    /**
+     * 删除资源
+     * @param rsid
+     */
+    @Transactional
+    @Override
+    public void deleteResourceById(Long rsid) {
+        resourceMapper.deleteResourceById(rsid);
+    }
+
+    /**
+     * 资源总数
+     * @return
+     */
+    @Override
+    public Long getResourceCount() {
+        return resourceMapper.getResourceCount();
+    }
 }
