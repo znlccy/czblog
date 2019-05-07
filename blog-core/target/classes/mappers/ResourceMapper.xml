@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.znlccy.blog.core.mapper.ResourceMapper">
+
+    <!-- 表名 开始 -->
+    <sql id="BASE_TABLE">
+        tb_resource
+    </sql>
+    <!-- 表名 结束 -->
+
+    <!-- 基本列 开始 -->
+    <sql id="BASE_COLUMN">
+
+    </sql>
+    <!-- 基本列 结束 -->
+
+    <!-- 添加资源 开始 -->
+    <insert id="saveResource" parameterType="com.znlccy.blog.core.model.Resource">
+        INSERT INTO
+          <include refid="BASE_TABLE" />
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+
+        </trim>
+    </insert>
+    <!-- 添加资源 结束 -->
+
+    <!-- 查找资源 开始 -->
+    <select id="findResourceById" parameterType="java.lang.Long" resultType="com.znlccy.blog.core.model.Resource">
+        SELECT
+            <include refid="BASE_COLUMN" />
+        FROM
+            <include refid="BASE_TABLE" />
+        WHERE
+
+    </select>
+    <!-- 查找资源 结束 -->
+</mapper>

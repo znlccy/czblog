@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.znlccy.blog.core.mapper.RoleMapper">
+
+    <!-- 表名 开始 -->
+    <sql id="BASE_TABLE">
+        tb_role
+    </sql>
+    <!-- 表名 结束 -->
+
+    <!-- 基本列 开始 -->
+    <sql id="BASE_COLUMN">
+        roid, role_name, role_key, status, description, create_time, update_time
+    </sql>
+    <!-- 基本列 结束 -->
+
+    <!-- 添加角色 开始 -->
+    <insert id="saveRole" parameterType="com.znlccy.blog.core.model.Role">
+        INSERT INTO
+          <include refid="BASE_TABLE" />
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            role_name, role_key, status, description, create_time
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{roleName, jdbcType=VARCHAR},
+            #{roleKey, jdbcType=VARCHAR},
+            #{status, jdbcType=INTEGER},
+            #{description, jdbcType=VARCHAR},
+            #{createTime, jdbcType=TIMESTAMP}
+        </trim>
+    </insert>
+    <!-- 添加角色 结束 -->
+
+    <!-- 更新角色 开始 -->
+    <update id="updateRole" parameterType="com.znlccy.blog.core.model.Role">
+        UPDATE
+          <include refid="BASE_TABLE" /> AS ro
+        SET
+          <if test="roleName != null">
+            ro.role_name = #{roleName, jdbcType=VARCHAR},
+          </if>
+          <if test="roleKey != null">
+              ro.role_key = #{roleKey, jdbcType=VARCHAR},
+          </if>
+          <if test="status != null">
+              ro.status = #{status, jdbcType=INTEGER},
+          </if>
+          <if test="description != null">
+              ro.description = #{description, jdbcType=VARCHAR},
+          </if>
+          <if test="createTime != null">
+              ro.create_time = #{createTime, jdbcType=TIMESTAMP}
+          </if>
+        WHERE
+          roid = #{roleId, jdbcType=BIGINT}
+    </update>
+    <!-- 更新角色 结束 -->
+
+    <!-- 条件查询角色 开始 -->
+    <select id="findRoleByCondition" parameterType="com.znlccy.blog.core.condition.RoleCondition" resultType="com.znlccy.blog.core.model.Role">
+        SELECT
+          <include refid="BASE_COLUMN" />
+        FROM
+          <include refid="BASE_TABLE" /> AS ro
+        WHERE
+          <if test="roleName != null">
+              AND ro.role_name LIKE CONCAT('%', #{roleName, jdbcType=VARCHAR}, '%')
+          </if>
+          <if test="roleKey != null">
+              AND ro.role_key LIKE CONCAT('%', #{roleKey, jdbcType=VARCHAR}, '%')
+          </if>
+          <if test="status != null">
+              AND ro.status = #{status, jdbcType=INTEGER}
+          </if>
+          <if test="description != null">
+              AND ro.description LIKE CONCAT('%', #{description, jdbcType=VARCHAR}, '%')
+          </if>
+    </select>
+    <!-- 条件查询角色 结束 -->
+
+    <!-- 删除角色 开始 -->
+    <delete id="deleteRoleById" parameterType="java.lang.Long">
+        DELETE
+        FROM
+            <include refid="BASE_TABLE" />
+        WHERE
+            rid = #{rid, jdbcType=BIGINT}
+    </delete>
+    <!-- 删除角色 结束 -->
+</mapper>

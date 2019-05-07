@@ -10,7 +10,7 @@
 
     <!-- 基本列 开始 -->
     <sql id="BASE_COLUMN">
-
+        rsid, name, description, parent, type, sort, url, create_time, update_time
     </sql>
     <!-- 基本列 结束 -->
 
@@ -19,7 +19,17 @@
         INSERT INTO
           <include refid="BASE_TABLE" />
         <trim prefix="(" suffix=")" suffixOverrides=",">
-
+            name, description, parent, type, sort, url, status, create_time
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{name, jdbcTYpe=VARCHAR},
+            #{description, jdbcType=VARCHAR},
+            #{parent, jdbcTyppe=BIGINT},
+            #{type, jdbcType=VARCHAR},
+            #{sort, jdbcType=INTEGER},
+            #{url, jdbcType=VARCHAR},
+            #{status, jdbcType=INTEGER},
+            #{createTime, jdbcType=TIMESTAMP}
         </trim>
     </insert>
     <!-- 添加资源 结束 -->
@@ -31,7 +41,45 @@
         FROM
             <include refid="BASE_TABLE" />
         WHERE
-
+            rsid = #{rsid, jdbcType=BIGINT}
     </select>
     <!-- 查找资源 结束 -->
+
+    <!-- 多条件查找资源 开始 -->
+    <select id="findResourceByCondition" parameterType="">
+        SELECT
+            <include refid="BASE_COLUMN" />
+        FROM
+            <include refid="BASE_TABLE" /> AS rs
+        WHERE
+            <if test="name != null">
+                AND rs.name LIKE CONCAT('%', #{name, jdbcType=VARCAHR}, '%')
+            </if>
+            <if test="description != null">
+                AND rs.description LIKE CONCAT('%', #{description, jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="parent != null">
+                AND rs.parent = #{parent, jdbcType=BIGINT}
+            </if>
+            <if test="type != null">
+                AND rs.type = #{type, jdbcType=VARCHAR}
+            </if>
+            <if test="sort != null">
+                AND rs.sort = #{sort, jdbcType=INTEGER}
+            </if>
+            <if test="url != null">
+                AND rs.url LIKE CONCAT('%', #{url, jdbcType=}, '%')
+            </if>
+            <if test="status != null">
+                AND rs.status = #{status, jdbcType=INTEGER}
+            </if>
+    </select>
+    <!-- 多条件查找资源 结束 -->
+
+    <!-- 更新资源 开始 -->
+    <update id="updateResource" parameterType="com.znlccy.blog.core.model.Resource">
+        UPDATE
+
+    </update>
+    <!-- 更新资源 结束 -->
 </mapper>

@@ -1,6 +1,10 @@
 package com.znlccy.blog.admin.controller;
 
+import com.znlccy.blog.core.model.Article;
+import com.znlccy.blog.core.service.IArticleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * ClassName: ArticleController
@@ -11,6 +15,15 @@ import org.springframework.stereotype.Controller;
  * 	1.0				ccy		        2019/4/25			    create
  */
 @Controller
+@RequestMapping(value = "/article")
 public class ArticleController {
 
+    @Autowired
+    private IArticleService articleService;
+
+    @ResponseBody
+    @GetMapping(value = "/detail/{aid}")
+    public Article getArticleDetail(@PathVariable Long aid) {
+        return articleService.findArticleById(aid);
+    }
 }

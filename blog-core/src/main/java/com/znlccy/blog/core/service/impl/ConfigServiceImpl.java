@@ -8,6 +8,8 @@ import com.znlccy.blog.core.model.Config;
 import com.znlccy.blog.core.service.IConfigService;
 import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +39,7 @@ public class ConfigServiceImpl implements IConfigService {
      * @param config
      */
     @Transactional
+    @CacheEvict(value = {"configCache", "configCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void saveConfig(Config config) {
         configMapper.saveConfig(config);
@@ -47,6 +50,7 @@ public class ConfigServiceImpl implements IConfigService {
      * @param cfid
      * @return
      */
+    @Cacheable(value = "configCache", key = "'configById_' + #p0")
     @Override
     public Config findConfigById(Long cfid) {
         return configMapper.findConfigById(cfid);
@@ -59,6 +63,7 @@ public class ConfigServiceImpl implements IConfigService {
      * @param pageNum
      * @return
      */
+    @Cacheable(value = "configCaches")
     @Override
     public PageInfo<Config> findConfigByCondition(ConfigCondition configCondition, int pageSize, int pageNum) {
         PageHelper.startPage(pageNum, pageSize);
@@ -72,6 +77,7 @@ public class ConfigServiceImpl implements IConfigService {
      * @param config
      */
     @Transactional
+    @CacheEvict(value = {"configCache", "configCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void updateConfig(Config config) {
         configMapper.updateConfig(config);
@@ -82,6 +88,7 @@ public class ConfigServiceImpl implements IConfigService {
      * @param cfid
      */
     @Transactional
+    @CacheEvict(value = {"configCache", "configCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void deleteConfigById(Long cfid) {
         configMapper.deleteConfigById(cfid);
@@ -91,6 +98,7 @@ public class ConfigServiceImpl implements IConfigService {
      * 配置总数
      * @return
      */
+    @Cacheable(value = "configCache", key = "config_count")
     @Override
     public Long getConfigCount() {
         return configMapper.getConfigCount();

@@ -74,7 +74,7 @@ public class CommentServiceImpl implements ICommentService {
      * @param atid
      * @return
      */
-    @Cacheable(value = "commentCaches",  key = "#p0")
+    @Cacheable(value = "commentCaches",  key = "'commentById_' + #p0")
     @Override
     public List<Comment> findCommentByArticleId(Long atid) {
         return null;
@@ -96,6 +96,7 @@ public class CommentServiceImpl implements ICommentService {
      * @param commentCondition
      * @return
      */
+    @Cacheable(value = "commentCaches")
     @Override
     public PageInfo<Comment> findCommentByCondition(CommentCondition commentCondition) {
         return null;
@@ -105,6 +106,8 @@ public class CommentServiceImpl implements ICommentService {
      * 删除评论
      * @param cmid
      */
+    @Transactional
+    @CacheEvict(value = {"commentCache", "commentCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void deleteCommentById(Long cmid) {
 
@@ -114,6 +117,7 @@ public class CommentServiceImpl implements ICommentService {
      * 评论总数
      * @return
      */
+    @Cacheable(value = "commentCache", key = "comment_count")
     @Override
     public Long getCommentCount() {
         return null;
@@ -124,6 +128,7 @@ public class CommentServiceImpl implements ICommentService {
      * @param cmid
      * @param status
      */
+    @Transactional
     @Override
     public void updateCommentStatus(Long cmid, String status) {
 

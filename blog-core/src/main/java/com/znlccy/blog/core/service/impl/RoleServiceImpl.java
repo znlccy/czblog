@@ -9,7 +9,10 @@ import com.znlccy.blog.core.mapper.RoleMapper;
 import com.znlccy.blog.core.model.Role;
 import com.znlccy.blog.core.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,6 +39,8 @@ public class RoleServiceImpl implements IRoleService {
      * 添加角色
      * @param role
      */
+    @Transactional
+    @CacheEvict(value = {"roleCache", "roleCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void saveRole(Role role) {
         roleMapper.saveRole(role);
@@ -46,6 +51,7 @@ public class RoleServiceImpl implements IRoleService {
      * @param roid
      * @return
      */
+    @Cacheable(value = "roleCache", key = "'roleById_' + #p0")
     @Override
     public Role findRoleById(Long roid) {
         return roleMapper.findRoleById(roid);
@@ -58,6 +64,7 @@ public class RoleServiceImpl implements IRoleService {
      * @param pageNum
      * @return
      */
+    @Cacheable(value = "roleCaches")
     @Override
     public PageInfo<Role> findRoleByCondition(RoleCondition roleCondition, int pageSize, int pageNum) {
         PageHelper.startPage(pageNum, pageSize);
@@ -70,6 +77,8 @@ public class RoleServiceImpl implements IRoleService {
      * 更新角色
      * @param role
      */
+    @Transactional
+    @CacheEvict(value = {"roleCache", "roleCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void updateRole(Role role) {
         roleMapper.updateRole(role);
@@ -79,6 +88,8 @@ public class RoleServiceImpl implements IRoleService {
      * 删除角色
      * @param roid
      */
+    @Transactional
+    @CacheEvict(value = {"roleCache", "roleCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void deleteRoleById(Long roid) {
         if (null == roid) {
@@ -90,6 +101,7 @@ public class RoleServiceImpl implements IRoleService {
      * 角色总数
      * @return
      */
+    @Cacheable(value = "roleCache", key = "role_count")
     @Override
     public Long getRoleCount() {
         return roleMapper.getRoleCount();

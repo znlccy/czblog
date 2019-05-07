@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.znlccy.blog.core.mapper.ConfigMapper">
+
+    <!-- 表名 开始 -->
+    <sql id="BASE_TABLE">
+        tb_config
+    </sql>
+    <!-- 表名 结束 -->
+
+    <!-- 基本列 开始 -->
+    <sql id="BASE_COLUMN">
+      cfid, name, value, description
+    </sql>
+    <!-- 基本列 结束 -->
+
+    <!-- 添加配置 开始 -->
+    <insert id="saveConfig" parameterType="com.znlccy.blog.core.model.Config">
+        INSERT INTO
+          <include refid="BASE_TABLE" />
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            cfid, name, value, description
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{cfid, jdbcType=BIGINT},
+            #{name, jdbcType=VARCHAR},
+            #{value, jdbcType=VARCHAR},
+            #{description, jdbcType=VARCHAR}
+        </trim>
+    </insert>
+    <!-- 添加配置 结束 -->
+
+    <!-- 更新配置 开始 -->
+    <update id="updateConfig" parameterType="com.znlccy.blog.core.model.Config">
+        UPDATE
+          <include refid="BASE_TABLE" />
+        SET
+          <if test="name != null">
+              name = #{name, jdbcType=VARCHAR},
+          </if>
+          <if test="value != null">
+              value = #{value, jdbcType=VARCHAR},
+          </if>
+          <if test="description != null">
+              description = #{description, jdbcType=VARCHAR}
+          </if>
+        WHERE
+          cfid = #{cfid, jdbcType=BIGINT}
+    </update>
+    <!-- 更新配置 结束 -->
+
+    <!-- 获取配置 开始 -->
+    <select id="findConfigByCfId" parameterType="java.lang.Long" resultType="com.znlccy.blog.core.model.Config">
+        SELECT
+          <include refid="BASE_COLUMN" />
+        FROM
+          <include refid="BASE_TABLE" /> as cf
+        WHERE
+          cf.cfid = #{cfid, jdbcType=BIGINT}
+    </select>
+    <!-- 获取配置 结束 -->
+
+    <!-- 删除配置 开始 -->
+    <delete id="deleteConfig" parameterType="java.lang.Long">
+        DELETE FROM
+          <include refid="BASE_TABLE" />
+        WHERE
+          cfid = #{cfid, jdbcType=BIGINT}
+    </delete>
+    <!-- 删除配置 结束 -->
+
+    <!-- 条件查找配置 开始 -->
+    <select id="findConfigByCondition" resultType="com.znlccy.blog.core.model.Config">
+        SELECT
+          <include refid="BASE_COLUMN" />
+        FROM
+          <include refid="BASE_TABLE" /> AS cfg
+        WHERE
+          <if test="name != null">
+              AND cfg.name LIKE CONCAT('%', #{name, jdbcType=VARCHAR}, '%')
+          </if>
+          <if test="value != null">
+              AND cfg.value LIKE CONCAT('%', #{value, #jdbcType=VARCHAR}, '%')
+          </if>
+          <if test="description != null">
+              AND cfg.description LIKE CONCAT('%', #{description, jdbcType=VARCHAR}, '%')
+          </if>
+    </select>
+    <!-- 条件查找配置 结束 -->
+
+    <!-- 删除配置 开始 -->
+    <delete id="deleteConfigById" parameterType="java.lang.Long">
+        DELETE FROM
+          <include refid="BASE_TABLE" />
+        WHERE
+          cfid = #{cfid, jdbcType=BIGINT}
+    </delete>
+    <!-- 删除配置 结束 -->
+</mapper>

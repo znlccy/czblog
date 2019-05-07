@@ -7,6 +7,8 @@ import com.znlccy.blog.core.mapper.ProjectMapper;
 import com.znlccy.blog.core.model.Project;
 import com.znlccy.blog.core.service.IProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,7 @@ public class ProjectServiceImpl implements IProjectService {
      * @param project
      */
     @Transactional
+    @CacheEvict(value = {"projectCache", "projectCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void saveProject(Project project) {
         projectMapper.saveProject(project);
@@ -46,6 +49,7 @@ public class ProjectServiceImpl implements IProjectService {
      * @param pjid
      * @return
      */
+    @Cacheable(value = "projectCache", key = "'projectById_' + #p0" )
     @Override
     public Project findProjectById(Long pjid) {
         return projectMapper.findProjectById(pjid);
@@ -58,6 +62,7 @@ public class ProjectServiceImpl implements IProjectService {
      * @param pageNum
      * @return
      */
+    @Cacheable(value = "projectCaches")
     @Override
     public PageInfo<Project> findProjectByCondition(ProjectCondition projectCondition, int pageSize, int pageNum) {
         PageHelper.startPage(pageNum, pageSize);
@@ -71,6 +76,7 @@ public class ProjectServiceImpl implements IProjectService {
      * @param project
      */
     @Transactional
+    @CacheEvict(value = {"projectCache", "projectCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void updateProject(Project project) {
         projectMapper.updateProject(project);
@@ -81,6 +87,7 @@ public class ProjectServiceImpl implements IProjectService {
      * @param pjid
      */
     @Transactional
+    @CacheEvict(value = {"projectCache", "projectCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void deleteProjectById(Long pjid) {
         projectMapper.deleteProjectById(pjid);
@@ -90,6 +97,7 @@ public class ProjectServiceImpl implements IProjectService {
      * 配置总数
      * @return
      */
+    @Cacheable(value = "projectCache", key = "project_count")
     @Override
     public Long getProjectCount() {
         return projectMapper.getProjectCount();

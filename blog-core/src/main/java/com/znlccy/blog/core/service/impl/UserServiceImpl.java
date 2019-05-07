@@ -7,7 +7,10 @@ import com.znlccy.blog.core.mapper.UserMapper;
 import com.znlccy.blog.core.model.User;
 import com.znlccy.blog.core.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -34,6 +37,8 @@ public class UserServiceImpl implements IUserService {
      * 添加用户
      * @param user
      */
+    @Transactional
+    @CacheEvict(value = {"userCache", "userCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void save(User user) {
         userMapper.saveUser(user);
@@ -44,6 +49,7 @@ public class UserServiceImpl implements IUserService {
      * @param uid
      * @return
      */
+    @Cacheable(value = "userCache", key = "'userById' + #p0")
     @Override
     public User findUserById(Long uid) {
         return userMapper.findUserById(uid);
@@ -54,6 +60,7 @@ public class UserServiceImpl implements IUserService {
      * @param userCondition
      * @return
      */
+    @Cacheable(value = "userCaches")
     @Override
     public PageInfo<User> findUserByCondition(UserCondition userCondition, int pageSize, int pageNum) {
         PageHelper.startPage(pageNum, pageSize);
@@ -66,6 +73,8 @@ public class UserServiceImpl implements IUserService {
      * 更新用户
      * @param user
      */
+    @Transactional
+    @CacheEvict(value = {"userCache", "userCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void updateUser(User user) {
         userMapper.updateUser(user);
@@ -75,6 +84,7 @@ public class UserServiceImpl implements IUserService {
      * 删除用户
      * @param uid
      */
+    @CacheEvict(value = {"userCache", "userCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void deleteUserById(Long uid) {
         userMapper.deleteUserById(uid);
@@ -84,6 +94,7 @@ public class UserServiceImpl implements IUserService {
      * 用户总数
      * @return
      */
+    @Cacheable(value = "userCache", key = "user_count")
     @Override
     public Long getUserCount() {
         return userMapper.getUserCount();

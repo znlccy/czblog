@@ -7,6 +7,8 @@ import com.znlccy.blog.core.mapper.LogMapper;
 import com.znlccy.blog.core.model.Log;
 import com.znlccy.blog.core.service.ILogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,7 @@ public class LogServiceImpl implements ILogService {
      * @param log
      */
     @Transactional
+    @CacheEvict(value = {"logCache", "logCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void saveLog(Log log) {
         logMapper.saveLog(log);
@@ -46,6 +49,7 @@ public class LogServiceImpl implements ILogService {
      * @param lid
      * @return
      */
+    @Cacheable(value = "logCache", key = "'logById_' + #p0")
     @Override
     public Log findLogById(Long lid) {
         return logMapper.findLogById(lid);
@@ -58,6 +62,7 @@ public class LogServiceImpl implements ILogService {
      * @param pageNum
      * @return
      */
+    @Cacheable(value = "logCaches")
     @Override
     public PageInfo<Log> findLogByCondition(LogCondition logCondition, int pageSize, int pageNum) {
         PageHelper.startPage(pageNum, pageSize);
@@ -71,6 +76,7 @@ public class LogServiceImpl implements ILogService {
      * @param lid
      */
     @Transactional
+    @CacheEvict(value = {"logCache", "logCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void deleteLogById(Long lid) {
         logMapper.deleteLogById(lid);
@@ -80,6 +86,7 @@ public class LogServiceImpl implements ILogService {
      * 日志总数
      * @return
      */
+    @Cacheable(value = "logCache", key = "log_count")
     @Override
     public Long getLogCount() {
         return logMapper.getLogCount();

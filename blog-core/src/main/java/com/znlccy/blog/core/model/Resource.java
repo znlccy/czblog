@@ -62,6 +62,11 @@ public class Resource extends BaseModel {
     private String url;
 
     /**
+     * 资源状态
+     */
+    private Integer status;
+
+    /**
      * 创建时间
      */
     private Date createTime;

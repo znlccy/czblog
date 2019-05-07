@@ -7,6 +7,8 @@ import com.znlccy.blog.core.mapper.ResourceMapper;
 import com.znlccy.blog.core.model.Resource;
 import com.znlccy.blog.core.service.IResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,7 @@ public class ResourceServiceImpl implements IResourceService {
      * @param resource
      */
     @Transactional
+    @CacheEvict(value = {"resourceCache", "resourceCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void saveResource(Resource resource) {
         resourceMapper.saveResource(resource);
@@ -46,6 +49,7 @@ public class ResourceServiceImpl implements IResourceService {
      * @param rsid
      * @return
      */
+    @Cacheable(value = "resourceCache", key = "'resourceById_' + #p0")
     @Override
     public Resource findResourceById(Long rsid) {
         return resourceMapper.findResourceById(rsid);
@@ -58,6 +62,7 @@ public class ResourceServiceImpl implements IResourceService {
      * @param pageNum
      * @return
      */
+    @Cacheable(value = "resourceCaches")
     @Override
     public PageInfo<Resource> findResourceByCondition(ResourceCondition resourceCondition, int pageSize, int pageNum) {
         PageHelper.startPage(pageNum, pageSize);
@@ -71,6 +76,7 @@ public class ResourceServiceImpl implements IResourceService {
      * @param resource
      */
     @Transactional
+    @CacheEvict(value = {"resourceCache", "resourceCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void updateResource(Resource resource) {
         resourceMapper.updateResource(resource);
@@ -81,6 +87,7 @@ public class ResourceServiceImpl implements IResourceService {
      * @param rsid
      */
     @Transactional
+    @CacheEvict(value = {"resourceCache", "resourceCaches"}, allEntries = true, beforeInvocation = true)
     @Override
     public void deleteResourceById(Long rsid) {
         resourceMapper.deleteResourceById(rsid);
@@ -90,6 +97,7 @@ public class ResourceServiceImpl implements IResourceService {
      * 资源总数
      * @return
      */
+    @Cacheable(value = "resourceCache", key = "resource_count")
     @Override
     public Long getResourceCount() {
         return resourceMapper.getResourceCount();
