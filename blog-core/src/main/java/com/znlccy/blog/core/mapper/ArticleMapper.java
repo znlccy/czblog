@@ -32,7 +32,7 @@ public interface ArticleMapper {
      * @param atid
      * @return
      */
-    Article findArticleById(Long atid);
+    Article findArticleById(@Param("atid") Long atid);
 
     /**
      * 多条件查找文章
@@ -51,7 +51,7 @@ public interface ArticleMapper {
      * 删除文章
      * @param atid
      */
-    void deleteArticleById(Long atid);
+    void deleteArticleById(@Param("atid") Long atid);
 
     /**
      * 文章总数

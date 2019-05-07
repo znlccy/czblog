@@ -3,7 +3,7 @@ server:
   port: 8888
 
 spring:
-  # 连接数据库资源
+  # MYSQL连接信息
   datasource:
     # 连接驱动名称
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -13,6 +13,30 @@ spring:
     username: root
     # 连接密码
     password: root
+
+    # 数据源类别
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 初始化大小、最小、最大
+    initialize: 8
+    min-idle: 3
+    max-active: 20
+    # 配置获取连接等待超时时间，单位为毫秒
+    max-wait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位为毫秒
+    time-between-eviction-runs-millis: 60000
+    # 配置一个连接在池中最小生存时间， 单位为毫秒
+    min-evictable-idle-time-millis: 300000
+    validation-query: SELECT 1 FROM DUAL
+    test-while-idle: true
+    test-on-borrow: false
+    test-on-return: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    pool-prepared-statements: true
+    max-pool-prepared-statement-per-connections-size: 20
+    # 配置监控统计拦截的filters, 去掉后监控界面的SQL无法统计, 'wall'用户防火墙
+    filters: stat, wall, log4j
+    # 通过connectProperties属性来打开mergeSQL功能，慢SQL记录
+    connection-properties: druid.stat.mergeSql=true; druid.stat.slowSqlMillis=5000
 
   # 配置Redis
   redis:

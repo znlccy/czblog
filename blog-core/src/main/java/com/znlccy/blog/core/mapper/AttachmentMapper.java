@@ -1,7 +1,11 @@
 package com.znlccy.blog.core.mapper;
 
+import com.znlccy.blog.core.condition.AttachmentCondition;
 import com.znlccy.blog.core.model.Attachment;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * The type AttachmentMapper
@@ -16,7 +20,41 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface AttachmentMapper {
 
-    void addAttachment(Attachment attachment);
+    /**
+     * 添加附件
+     * @param attachment
+     */
+    void saveAttachment(Attachment attachment);
 
+    /**
+     * 查找附件
+     * @param amid
+     * @return
+     */
+    Attachment findAttachmentById(@Param("amid") Long amid);
+
+    /**
+     * 多条件查找附件
+     * @param attachmentCondition
+     * @return
+     */
+    List<Attachment> findAttachmentByCondition(AttachmentCondition attachmentCondition);
+
+    /**
+     * 更新附件
+     * @param attachment
+     */
     void updateAttachment(Attachment attachment);
+
+    /**
+     * 删除附件
+     * @param amid
+     */
+    void deleteAttachmentById(@Param("amid") Long amid);
+
+    /**
+     * 附件总数
+     * @return
+     */
+    Long getAttachmentCount();
 }
