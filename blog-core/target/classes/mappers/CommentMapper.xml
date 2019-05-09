@@ -138,4 +138,11 @@
           <include refid="BASE_TABLE" />
     </select>
     <!-- 评论总数 结束 -->
+
+    <!-- 更新评论状态 开始 -->
+    <update id="updateCommentStatus">
+        UPDATE
+            <include refid="BASE_TABLE" />
+    </update>
+    <!-- 更新评论状态 结束 -->
 </mapper>

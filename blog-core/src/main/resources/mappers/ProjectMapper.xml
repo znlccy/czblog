@@ -10,13 +10,23 @@
 
     <!-- 基本列 开始 -->
     <sql id="BASE_COLUMN">
-
+        pjid, name, type, content_type, description, sort, parent, create_time, update_time
     </sql>
     <!-- 基本列 结束 -->
 
     <!-- 添加项目 开始 -->
     <insert id="saveProject" parameterType="com.znlccy.blog.core.model.Project">
+        INSERT INTO
+            <include refid="BASE_TABLE" />
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            name, type, content_type, description, sort, parent, create_time
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{name, jdbcType=VARCHAR},
+            #{type, jdbcType=VARCHAR},
+            #{contentType, jdbcType=VARCHAR},
 
+        </trim>
     </insert>
     <!-- 添加项目 结束 -->
 </mapper>

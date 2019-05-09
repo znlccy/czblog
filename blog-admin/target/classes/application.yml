@@ -38,6 +38,20 @@ spring:
     # 通过connectProperties属性来打开mergeSQL功能，慢SQL记录
     connection-properties: druid.stat.mergeSql=true; druid.stat.slowSqlMillis=5000
 
+  # Thymeleaf模板配置
+  thymeleaf:
+    # 模板的模式，支持HTML、XML、TEXT、JAVASCRIPT
+    mode: HTML5
+    # 编码,可不用配置
+    encoding: UTF-8
+    # 内容类别，可不用配置
+    content-type: text/html
+    # 开发配置是false，避免修改模板还要重启服务
+    cache: false
+    # 配置模板路径, 默认是template,可以不用配置
+    # prefix: /template/
+
+
   # 配置Redis
   redis:
     # 连接主机
@@ -57,6 +71,9 @@ spring:
         # 连接池最小空闲连接
         min-idle: 0
     # 连接超时时间(毫秒)
-    timeout: 0
+    timeout: 5000
 
-
+# Mybatis配置类
+mybatis:
+  mapper-locations: classpath*:com/znlccy/blog/core/mapper/*.xml
+  type-aliases-package: com.znlccy.blog.core.model

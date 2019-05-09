@@ -22,8 +22,8 @@ public class ArticleController {
     private IArticleService articleService;
 
     @ResponseBody
-    @GetMapping(value = "/detail/{aid}")
-    public Article getArticleDetail(@PathVariable Long aid) {
-        return articleService.findArticleById(aid);
+    @GetMapping(value = "/detail/{atid}")
+    public Article getArticleDetail(@PathVariable Long atid) {
+        return articleService.findArticleById(atid);
     }
 }

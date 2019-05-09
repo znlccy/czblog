@@ -50,7 +50,7 @@
     <!-- 更新配置 结束 -->
 
     <!-- 获取配置 开始 -->
-    <select id="findConfigByCfId" parameterType="java.lang.Long" resultType="com.znlccy.blog.core.model.Config">
+    <select id="findConfigById" parameterType="java.lang.Long" resultType="com.znlccy.blog.core.model.Config">
         SELECT
           <include refid="BASE_COLUMN" />
         FROM
@@ -59,15 +59,6 @@
           cf.cfid = #{cfid, jdbcType=BIGINT}
     </select>
     <!-- 获取配置 结束 -->
-
-    <!-- 删除配置 开始 -->
-    <delete id="deleteConfig" parameterType="java.lang.Long">
-        DELETE FROM
-          <include refid="BASE_TABLE" />
-        WHERE
-          cfid = #{cfid, jdbcType=BIGINT}
-    </delete>
-    <!-- 删除配置 结束 -->
 
     <!-- 条件查找配置 开始 -->
     <select id="findConfigByCondition" resultType="com.znlccy.blog.core.model.Config">
