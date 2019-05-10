@@ -1,0 +1,64 @@
+# 配置服务端口
+server:
+  port: 8086
+  servlet:
+    context-path: /blog
+
+# 配置数据源
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/db_blog?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    # type: com.alibaba.druid.pool.DruidDataSource
+
+  # Thymeleaf配置
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    encoding: UTF-8
+    cache: false
+
+  devtools:
+    add-properties: false
+    restart:
+      enabled: false
+
+  # redis 相关配置
+  redis:
+    #  数据库索引
+    database: 0
+    # 远程服务器地址
+    host: 127.0.0.1
+    # 远程服务器端口
+    port: 6379
+    # 验证码
+    password:
+    jedis:
+      pool:
+        # 最大空闲连接
+        max-idle: 8
+        # 最小空闲链接
+        min-idle: 0
+        # 最大连接数（负数表示没有限制）
+        max-active: 8
+        # 最大阻塞等待时间（负数表示没有限制）
+        max-wait: 0
+    # 链接超时时间（毫秒）
+    timeout: 50
+
+# MyBatis配置
+
+mybatis:
+  mapper-locations: classpath:/mappers/*.xml
+  type-aliases-package: com.znlccy.blog.core.model
+
+# PageHelper配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+  retrunPageInfo: check
