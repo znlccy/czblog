@@ -6,9 +6,67 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1.0" />
     <title>博客后台</title>
-    <script src="../static/js/jquery-3.4.0.js"></script>
+    <script src="/js/jquery-3.4.0.js"></script>
+    <script>
+        //使用JavaScript更改表单元素
+        function setColorByJs() {
+            //获取input元素集合
+            var inputs = document.getElementsByTagName("input")
+            for (var i=0; i < inputs.length; i++) {
+                inputs[i].style.background = '#efefef';
+            }
+            //获取textarea元素集合
+            var textareas = document.getElementsByTagName("textarea");
+            for (var j=0; j< textareas.length; j++) {
+                textareas[j].style.background = '#efefef';
+            }
+        }
+        
+        //使用JQuery更改表单元素
+        function setColorByJQuery() {
+            //更改input元素的背景颜色
+            $(":input").css('background', '#efefef');
+            //更改textarea元素的背景颜色
+            $(":textarea").css("background", '#efefef');
+        }
+
+        //document页面加载事件
+        $(document).ready(function (e) {
+            //更改div元素的字体
+            $("#msg").css("foot-size","24pt");
+            //向div添加一个点击事件
+        });
+
+        $("#msg").click(function (e) {
+            alert($(this).html());
+        });
+
+        $("<div>", {
+            style: "font-size:9pt",
+            text: "点击这里更改颜色",
+            //为文本添加点击事件
+            click: function () {
+                $(this).css("background", "#9f3");
+            }
+        }).appendTo("body");
+    </script>
 </head>
 <body>
+    <form action="" id="contacts-form">
+        <fieldset>
+            <label><span>姓名:</span><input type="text" /></label>
+            <label><span>电子邮件:</span><input type="text" /></label>
+            <div class="wrapper"><span>留言:</span><textarea></textarea></div>
+        </fieldset>
+    </form>
 
+    <div id="msg">
+        <span>点击事件</span>
+    </div>
+    <!-- 操作按钮 -->
+    <div class="wrapper">
+        <a href="#" class="button" onclick="javascript:setColorByJs();">JavaScript更改表颜色</a>
+        <a href="#" class="button" onclick="javascript:setColorByJQuery();">JQuery更改表颜色</a>
+    </div>
 </body>
 </html>
