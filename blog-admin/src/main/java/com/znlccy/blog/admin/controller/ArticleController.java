@@ -1,5 +1,6 @@
 package com.znlccy.blog.admin.controller;
 
+import com.znlccy.blog.core.controller.BaseController;
 import com.znlccy.blog.core.model.Article;
 import com.znlccy.blog.core.service.IArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Controller
 @RequestMapping(value = "/article")
-public class ArticleController {
+public class ArticleController extends BaseController {
 
     @Autowired
     private IArticleService articleService;

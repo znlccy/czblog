@@ -1,8 +1,8 @@
 package com.znlccy.blog.admin.controller;
 
+import com.znlccy.blog.core.controller.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * ClassName: IndexController
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * 	1.0				ccy		        2019/5/9			    create
  */
 @Controller
-public class IndexController {
+public class IndexController extends BaseController {
 
     @GetMapping(value = "/")
     public String index() {

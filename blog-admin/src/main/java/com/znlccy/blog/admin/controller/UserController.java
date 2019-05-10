@@ -1,5 +1,6 @@
 package com.znlccy.blog.admin.controller;
 
+import com.znlccy.blog.core.controller.BaseController;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -11,5 +12,5 @@ import org.springframework.stereotype.Controller;
  * 	1.0				ccy		        2019/4/25			        create
  */
 @Controller
-public class UserController {
+public class UserController extends BaseController {
 }
