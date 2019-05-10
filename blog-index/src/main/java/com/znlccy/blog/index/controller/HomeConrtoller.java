@@ -6,6 +6,7 @@ import com.znlccy.blog.core.service.ICommentService;
 import com.znlccy.blog.core.service.IProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
@@ -44,8 +45,9 @@ public class HomeConrtoller extends BaseController {
      * @return
      */
     @GetMapping(value = {"/", "/index"})
-    public String index() {
-        return null;
+    public String index(Model model) {
+        model.addAttribute("user", "chen");
+        return "index";
     }
 
 }
